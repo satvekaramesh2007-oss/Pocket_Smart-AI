@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+    <div>
+      <h1 style="font-size: 1.85rem; font-weight: 800;">Your Saved & Past Plans</h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Review, reopen, or delete previous recommendation requests.</p>
+    </div>
+
+    <a href="/dashboard" class="btn btn-secondary btn-sm">← Back to Dashboard</a>
+  </div>
+
+  {% if history_list %}
+    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+      {% for item in history_list %}
+        <div id="history-card-{{ item.id }}" class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+          <div style="flex: 1; min-width: 280px;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.4rem;">
+              <span style="font-size: 1.4rem;">
+                {% if item.planner_type == 'home' %}🏠{% elif item.planner_type == 'party' %}🎉{% else %}💎{% endif %}
+              </span>
+              <h3 style="font-size: 1.2rem; text-transform: capitalize; color: #fff; margin-bottom: 0;">
+                {{ item.planner_type }} Recommendation Plan #{{ item.id }}
+              </h3>
+              {% if item.is_saved %}
+                <span class="status-badge status-within_budget" style="font-size: 0.7rem;">❤️ Saved</span>
+              {% endif %}
+            </div>
+
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">{{ item.summary }}</p>
+            <div style="font-size: 0.8rem; color: #64748b;">Created on {{ item.created_at.strftime('%Y-%m-%d at %H:%M') }}</div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <div style="text-align: right;">
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Budget Limit</div>
+              <div style="font-size: 1.2rem; font-weight: 800; color: var(--accent-blue);">₹{{ "{:,.2f}".format(item.budget) }}</div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem;">
+              <a href="/results/{{ item.id }}" class="btn btn-primary btn-sm">View Details</a>
+              <button onclick="deletePlan({{ item.id }})" class="btn btn-danger btn-sm" title="Delete Plan">🗑️</button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); text-align: center; padding: 4rem 2rem;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
+      <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">No Plan History Found</h3>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">You haven't generated any budget recommendations yet.</p>
+      <a href="/dashboard" class="btn btn-primary">Go to Dashboard →</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

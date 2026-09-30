@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 1100px; margin: 0 auto;">
+  <!-- Header Bar -->
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+    <div>
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <h1 style="font-size: 1.85rem; font-weight: 800; text-transform: capitalize;">
+          {% if plan.planner_type == 'home' %}🏠 Home Interior{% elif plan.planner_type == 'party' %}🎉 Party Event{% else %}💎 Jewelry Styling{% endif %} Recommendations
+        </h1>
+        <span class="status-badge status-{{ result.budget_status }}">
+          {{ result.budget_status.replace('_', ' ') }}
+        </span>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Plan #{{ plan.id }} • Created {{ plan.created_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
+    </div>
+
+    <div style="display: flex; gap: 0.75rem;">
+      <button id="save-btn-{{ plan.id }}" onclick="toggleSavePlan({{ plan.id }})" class="btn {% if plan.is_saved %}btn-secondary{% else %}btn-primary{% endif %}">
+        {% if plan.is_saved %}❤️ Saved{% else %}🤍 Save Recommendation{% endif %}
+      </button>
+      <a href="/{{ plan.planner_type }}-planner" class="btn btn-secondary">Modify Preferences</a>
+    </div>
+  </div>
+
+  <!-- Budget Summary Dashboard Box -->
+  <div class="budget-summary-box">
+    <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">Budget Breakdown & Allocation</h3>
+    
+    <div class="budget-stats-grid">
+      <div class="stat-item">
+        <div class="stat-label">Total User Budget</div>
+        <div class="stat-value" style="color: var(--text-main);">₹{{ "{:,.2f}".format(result.budget) }}</div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-label">Estimated Total Cost</div>
+        <div class="stat-value" style="color: var(--accent-blue);">₹{{ "{:,.2f}".format(result.total_estimated_cost) }}</div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-label">Remaining Balance</div>
+        <div class="stat-value" style="color: {% if result.remaining_budget >= 0 %}#34d399{% else %}#f87171{% endif %};">
+          ₹{{ "{:,.2f}".format(result.remaining_budget) }}
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-label">Budget Status</div>
+        <div style="margin-top: 0.25rem;">
+          <span class="status-badge status-{{ result.budget_status }}">
+            {{ result.budget_status.replace('_', ' ') }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Allocation Visual Progress Bars -->
+    {% if result.allocated_budget %}
+      <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+        <h4 style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.75rem;">Category Allocation Split</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+          {% for cat, amt in result.allocated_budget.items() %}
+            {% set pct = ((amt / result.budget) * 100) if result.budget > 0 else 0 %}
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem;">
+                <span style="text-transform: capitalize; font-weight: 600;">{{ cat.replace('_', ' ') }}</span>
+                <span>₹{{ "{:,.0f}".format(amt) }} ({{ "%.0f"|format(pct) }}%)</span>
+              </div>
+              <div style="background: rgba(255, 255, 255, 0.1); height: 8px; border-radius: 4px; overflow: hidden;">
+                <div style="background: var(--primary-gradient); height: 100%; width: {{ pct if pct <= 100 else 100 }}%;"></div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Multimodal Outfit Analysis (If Jewelry Planner) -->
+  {% if result.outfit_analysis %}
+    <div style="background: rgba(99, 102, 241, 0.1); border: 1px solid var(--border-highlight); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 2rem;">
+      <h3 style="font-size: 1.1rem; color: #a5b4fc; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>📸</span> Multimodal Outfit Image Styling Analysis
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; font-size: 0.9rem;">
+        <div><strong>Outfit Tone:</strong> {{ result.outfit_analysis.analyzed_outfit_color }}</div>
+        <div><strong>Neckline Match:</strong> {{ result.outfit_analysis.neckline_compatibility }}</div>
+        <div><strong>Style Harmony:</strong> {{ result.outfit_analysis.style_match }}</div>
+        {% if result.outfit_analysis.suggested_jewelry_tones %}
+          <div><strong>Suggested Tones:</strong> {{ result.outfit_analysis.suggested_jewelry_tones|join(', ') }}</div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- AI Summary & Tips -->
+  <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 2rem;">
+    <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">AI Assistant Summary</h3>
+    <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1rem;">{{ result.summary }}</p>
+
+    {% if result.tips %}
+      <h4 style="font-size: 0.95rem; color: var(--accent-blue); margin-bottom: 0.5rem;">Smart Tips & Suggestions:</h4>
+      <ul style="padding-left: 1.25rem; color: var(--text-muted); font-size: 0.9rem;">
+        {% for tip in result.tips %}
+          <li style="margin-bottom: 0.25rem;">{{ tip }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+
+  <!-- Recommendation Cards Grid -->
+  <h3 style="font-size: 1.4rem; margin-bottom: 1.25rem;">Curated Recommendations</h3>
+  <div class="rec-cards-grid" style="margin-bottom: 3rem;">
+    {% for item in result.recommendations %}
+      <div class="rec-card">
+        <div>
+          <div class="rec-card-header">
+            <div class="rec-card-title">{{ item.name }}</div>
+            <div class="rec-card-price">₹{{ "{:,.0f}".format(item.estimated_price) }}</div>
+          </div>
+
+          <div class="rec-card-meta">
+            <span>Category: <strong>{{ item.category }}</strong></span> • 
+            <span>Platform: <strong>{{ item.platform }}</strong></span>
+          </div>
+
+          <div class="rec-card-reason">
+            💡 {{ item.reason }}
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+          <span class="status-badge status-{{ item.budget_status if item.budget_status else 'within_budget' }}" style="font-size: 0.75rem;">
+            {{ (item.budget_status if item.budget_status else 'within_budget').replace('_', ' ') }}
+          </span>
+
+          {% if item.search_url %}
+            <a href="{{ item.search_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+              View Option 🔗
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Cheaper Alternatives Section (If Over Budget) -->
+  {% if result.cheaper_alternatives %}
+    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--status-over-border); border-radius: var(--radius-md); padding: 1.75rem; margin-bottom: 3rem;">
+      <h3 style="color: #f87171; font-size: 1.2rem; margin-bottom: 0.5rem;">⚠️ Budget Adjustment: Cheaper Alternatives</h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">
+        Your requested plan exceeded the total budget. We have calculated these alternative options to help bring costs back within your limit:
+      </p>
+
+      <div class="rec-cards-grid">
+        {% for alt in result.cheaper_alternatives %}
+          <div class="rec-card" style="border-color: rgba(239, 68, 68, 0.3);">
+            <div>
+              <div class="rec-card-header">
+                <div class="rec-card-title">{{ alt.name }}</div>
+                <div class="rec-card-price" style="color: #34d399;">₹{{ "{:,.0f}".format(alt.estimated_price) }}</div>
+              </div>
+
+              <div class="rec-card-meta">Category: {{ alt.category }} | Platform: {{ alt.platform }}</div>
+              <div class="rec-card-reason">💡 {{ alt.reason }}</div>
+            </div>
+
+            {% if alt.search_url %}
+              <div style="text-align: right; margin-top: 0.75rem;">
+                <a href="{{ alt.search_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">View Option 🔗</a>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Bottom Navigation Buttons -->
+  <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 3rem;">
+    <a href="/{{ plan.planner_type }}-planner" class="btn btn-primary">🔄 Generate Again</a>
+    <a href="/dashboard" class="btn btn-secondary">🏠 Back to Dashboard</a>
+  </div>
+</div>
+{% endblock %}

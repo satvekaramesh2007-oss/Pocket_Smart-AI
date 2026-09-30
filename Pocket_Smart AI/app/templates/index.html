@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+  <span class="hero-tagline">✨ GenAI-Powered Budget & Recommendation Assistant</span>
+  <h1 class="hero-title">Plan Smarter.<br>Spend Better.</h1>
+  <p class="hero-subtitle">
+    PocketSmart AI leverages Google Gemini to curate personalized, itemized recommendations for Home Interiors, Party Events, and Jewelry Styling — strictly tailored to your budget.
+  </p>
+  
+  <div class="hero-cta">
+    {% if user %}
+      <a href="/dashboard" class="btn btn-primary">Go to Dashboard →</a>
+    {% else %}
+      <a href="/register" class="btn btn-primary">Start Planning Free</a>
+      <a href="/login" class="btn btn-secondary">Login to Account</a>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Feature Cards Section -->
+<section id="features" style="margin-top: 3rem;">
+  <h2 style="text-align: center; font-size: 2rem; margin-bottom: 0.5rem;">Explore AI Planners</h2>
+  <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Select a planner below to generate itemized recommendations aligned with your exact budget limit.</p>
+
+  <div class="cards-grid">
+    <!-- Home Planner Card -->
+    <div class="card">
+      <div class="card-icon">🏠</div>
+      <h3 class="card-title">Home Interior Planner</h3>
+      <p class="card-desc">
+        Design your Living Room, Bedroom, or Study. Specify furniture, lighting, rugs, and decor requirements to receive budget-optimized product suggestions.
+      </p>
+      <a href="/home-planner" class="btn btn-secondary btn-sm" style="width: 100%;">Plan Home Interior →</a>
+    </div>
+
+    <!-- Party Planner Card -->
+    <div class="card">
+      <div class="card-icon">🎉</div>
+      <h3 class="card-title">Party & Event Planner</h3>
+      <p class="card-desc">
+        Plan Birthdays, Weddings, or Corporate Gatherings. Automatically divide your budget across catering, venue rental, decoration, and entertainment.
+      </p>
+      <a href="/party-planner" class="btn btn-secondary btn-sm" style="width: 100%;">Plan Event →</a>
+    </div>
+
+    <!-- Jewelry Planner Card -->
+    <div class="card">
+      <div class="card-icon">💎</div>
+      <h3 class="card-title">Jewelry Planner</h3>
+      <p class="card-desc">
+        Upload an optional outfit photo. Multimodal AI analyzes color tones, necklines, and style to match exquisite necklaces, earrings, and bangles.
+      </p>
+      <a href="/jewelry-planner" class="btn btn-secondary btn-sm" style="width: 100%;">Get Jewelry Styling →</a>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" style="margin: 4rem 0;">
+  <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 3rem 2rem;">
+    <h2 style="text-align: center; font-size: 2rem; margin-bottom: 2.5rem;">How PocketSmart AI Works</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; text-align: center;">
+      <div>
+        <div style="width: 50px; height: 50px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.25rem; margin: 0 auto 1rem;">1</div>
+        <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Set Your Budget</h4>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Input your total budget in INR along with room, event, or styling preferences.</p>
+      </div>
+
+      <div>
+        <div style="width: 50px; height: 50px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.25rem; margin: 0 auto 1rem;">2</div>
+        <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Multimodal AI Analysis</h4>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Google Gemini calculates category budget allocations and pairs requirements with products.</p>
+      </div>
+
+      <div>
+        <div style="width: 50px; height: 50px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.25rem; margin: 0 auto 1rem;">3</div>
+        <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem;">Smart Recommendations</h4>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Review itemized cards, platform search links, and save your plan for future reference.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section style="margin-bottom: 4rem;">
+  <h2 style="text-align: center; font-size: 2rem; margin-bottom: 2rem;">Loved by Smart Planners</h2>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+    <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
+      <p style="font-style: italic; color: #cbd5e1; margin-bottom: 1rem;">"PocketSmart AI helped me furnish my 2BHK living room within ₹60,000 without overspending on single items!"</p>
+      <div style="font-weight: 700;">— Priya Sharma (Demo Testimonial)</div>
+      <div style="font-size: 0.8rem; color: var(--text-muted);">Homeowner</div>
+    </div>
+
+    <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
+      <p style="font-style: italic; color: #cbd5e1; margin-bottom: 1rem;">"The party budget breakdown for 80 guests was spot on. Venue and food allocations matched real market costs perfectly."</p>
+      <div style="font-weight: 700;">— Rahul Verma (Demo Testimonial)</div>
+      <div style="font-size: 0.8rem; color: var(--text-muted);">Event Host</div>
+    </div>
+
+    <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
+      <p style="font-style: italic; color: #cbd5e1; margin-bottom: 1rem;">"Uploading my saree photo and getting Kundan necklace suggestions that fit my ₹5,000 budget was amazing!"</p>
+      <div style="font-weight: 700;">— Ananya Patel (Demo Testimonial)</div>
+      <div style="font-size: 0.8rem; color: var(--text-muted);">Wedding Guest</div>
+    </div>
+  </div>
+</section>
+{% endblock %}

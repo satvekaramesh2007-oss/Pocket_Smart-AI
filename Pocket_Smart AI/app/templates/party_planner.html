@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+  <div class="form-header">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+      <span style="font-size: 2rem;">🎉</span>
+      <h2 class="form-title" style="margin-bottom: 0;">Party & Event Planner</h2>
+    </div>
+    <p style="color: var(--text-muted); font-size: 0.95rem;">Intelligently divide your event budget across venue, food catering, theme decor, and entertainment.</p>
+  </div>
+
+  <form id="party-planner-form">
+    <!-- Budget & Guests -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="budget">Total Event Budget (INR ₹) *</label>
+        <input type="number" id="budget" required min="2000" step="1000" value="100000" placeholder="e.g. 100000">
+      </div>
+
+      <div class="form-group">
+        <label for="guests">Number of Guests *</label>
+        <input type="number" id="guests" required min="1" value="50" placeholder="e.g. 50">
+      </div>
+    </div>
+
+    <!-- Event Type & Venue -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="event_type">Event Type *</label>
+        <select id="event_type" required>
+          <option value="Birthday" selected>Birthday</option>
+          <option value="Wedding">Wedding</option>
+          <option value="Engagement">Engagement</option>
+          <option value="Corporate">Corporate Gathering</option>
+          <option value="Anniversary">Anniversary</option>
+          <option value="Get-together">Get-together</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="venue_preference">Venue Preference</label>
+        <select id="venue_preference">
+          <option value="Banquet Hall" selected>Banquet Hall</option>
+          <option value="Outdoor Lawn">Outdoor Lawn</option>
+          <option value="Restaurant / Lounge">Restaurant / Lounge</option>
+          <option value="Home / Terrace">Home / Terrace</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Location & Food Preference -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="location">Event City / Location</label>
+        <input type="text" id="location" placeholder="e.g. Mumbai, Bangalore, Delhi">
+      </div>
+
+      <div class="form-group">
+        <label for="food_preference">Food Catering Preference</label>
+        <select id="food_preference">
+          <option value="Veg & Non-Veg Buffet" selected>Veg & Non-Veg Buffet</option>
+          <option value="Pure Veg Buffet">Pure Veg Buffet</option>
+          <option value="Finger Foods & Cocktails">Finger Foods & Cocktails</option>
+          <option value="High Tea & Snacks">High Tea & Snacks</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Decor & Entertainment -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="decoration_style">Decoration Style</label>
+        <select id="decoration_style">
+          <option value="Theme Balloon & Floral Arch" selected>Theme Balloon & Floral Arch</option>
+          <option value="Minimalist LED Ambient">Minimalist LED Ambient</option>
+          <option value="Royal Luxury Floral">Royal Luxury Floral</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="entertainment_preference">Entertainment</label>
+        <select id="entertainment_preference">
+          <option value="DJ Setup & Disco Lights" selected>DJ Setup & Disco Lights</option>
+          <option value="Party Games & Host">Party Games & Host</option>
+          <option value="Photo Booth Rental">Photo Booth Rental</option>
+          <option value="None">None</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Accommodation Checkbox -->
+    <div class="form-group" style="margin-top: 0.5rem;">
+      <label class="checkbox-item" style="font-size: 1rem;">
+        <input type="checkbox" id="accommodation_required">
+        Include Guest Accommodation / Hotel Room Package
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+      🎉 Generate Event Plan →
+    </button>
+  </form>
+</div>
+{% endblock %}

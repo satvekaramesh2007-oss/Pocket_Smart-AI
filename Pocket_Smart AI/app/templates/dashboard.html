@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-layout">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div style="margin-bottom: 1.5rem; text-align: center;">
+      <div style="width: 60px; height: 60px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; margin: 0 auto 0.75rem;">👤</div>
+      <h3 style="font-size: 1.1rem; color: #fff;">{{ user.name }}</h3>
+      <p style="font-size: 0.8rem; color: var(--text-muted);">{{ user.email }}</p>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li class="sidebar-item active"><a href="/dashboard">📊 Dashboard</a></li>
+      <li class="sidebar-item"><a href="/home-planner">🏠 Home Planner</a></li>
+      <li class="sidebar-item"><a href="/party-planner">🎉 Party Planner</a></li>
+      <li class="sidebar-item"><a href="/jewelry-planner">💎 Jewelry Planner</a></li>
+      <li class="sidebar-item"><a href="/history">📜 Plan History</a></li>
+      <li class="sidebar-item" style="margin-top: 1.5rem;">
+        <a href="#" onclick="logoutUser(); return false;" style="color: #f87171;">🚪 Logout</a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Main Dashboard Content Area -->
+  <section>
+    <!-- Welcome Header Banner -->
+    <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%); border: 1px solid var(--border-highlight); border-radius: var(--radius-md); padding: 2rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <h1 style="font-size: 1.85rem; font-weight: 800; margin-bottom: 0.5rem;">Welcome back, {{ user.name }}! 👋</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">What would you like to plan today? Choose a smart assistant below.</p>
+      </div>
+
+      <div style="display: flex; gap: 1.5rem;">
+        <div style="text-align: center;">
+          <div style="font-size: 1.75rem; font-weight: 800; color: var(--accent-blue);">{{ total_plans_count }}</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Total Plans</div>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 1.75rem; font-weight: 800; color: #34d399;">{{ saved_plans_count }}</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Saved Plans</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Planner Launch Cards -->
+    <h3 style="margin-bottom: 1rem;">Quick Start Planners</h3>
+    <div class="cards-grid" style="margin-top: 0; margin-bottom: 2.5rem;">
+      <!-- Home Card -->
+      <div class="card">
+        <div class="card-icon">🏠</div>
+        <h4 class="card-title">Home Interior</h4>
+        <p class="card-desc">Allocate budget for sofas, lights, study desks, and decor.</p>
+        <a href="/home-planner" class="btn btn-primary btn-sm">Start Home Plan →</a>
+      </div>
+
+      <!-- Party Card -->
+      <div class="card">
+        <div class="card-icon">🎉</div>
+        <h4 class="card-title">Party & Event</h4>
+        <p class="card-desc">Optimize venue rental, food catering, balloons, and DJ sound.</p>
+        <a href="/party-planner" class="btn btn-primary btn-sm">Start Party Plan →</a>
+      </div>
+
+      <!-- Jewelry Card -->
+      <div class="card">
+        <div class="card-icon">💎</div>
+        <h4 class="card-title">Jewelry Styling</h4>
+        <p class="card-desc">Upload outfit photos for AI color harmony & necklace matching.</p>
+        <a href="/jewelry-planner" class="btn btn-primary btn-sm">Start Jewelry Plan →</a>
+      </div>
+    </div>
+
+    <!-- Recent Recommendations Activity -->
+    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.75rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="font-size: 1.25rem;">Recent Recommendations</h3>
+        <a href="/history" style="font-size: 0.875rem;">View Full History →</a>
+      </div>
+
+      {% if recent_plans %}
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          {% for plan in recent_plans %}
+            <div id="history-card-{{ plan.id }}" style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                  <span style="font-size: 1.1rem;">
+                    {% if plan.planner_type == 'home' %}🏠{% elif plan.planner_type == 'party' %}🎉{% else %}💎{% endif %}
+                  </span>
+                  <strong style="text-transform: capitalize; font-size: 1rem;">{{ plan.planner_type }} Plan #{{ plan.id }}</strong>
+                  <span style="font-size: 0.8rem; color: var(--text-muted);">({{ plan.created_at.strftime('%Y-%m-%d %H:%M') }})</span>
+                </div>
+                <p style="font-size: 0.875rem; color: var(--text-muted);">{{ plan.summary }}</p>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="text-align: right;">
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Budget Limit</div>
+                  <div style="font-weight: 700; color: var(--accent-blue);">₹{{ "{:,.2f}".format(plan.budget) }}</div>
+                </div>
+                <a href="/results/{{ plan.id }}" class="btn btn-secondary btn-sm">View Details</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📜</div>
+          <p>No plans created yet. Select a planner above to generate your first recommendation!</p>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+</div>
+{% endblock %}

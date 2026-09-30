@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container" style="max-width: 520px; margin-top: 2rem;">
+  <div class="form-header">
+    <h2 class="form-title">Create Free Account</h2>
+    <p style="color: var(--text-muted); font-size: 0.9rem;">Join PocketSmart AI to start generating smart budget recommendations.</p>
+  </div>
+
+  <form id="register-form">
+    <div class="form-group">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" required placeholder="John Doe">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" required placeholder="john@example.com">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required minlength="6" placeholder="Min 6 chars">
+      </div>
+
+      <div class="form-group">
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" id="confirm_password" required minlength="6" placeholder="Repeat password">
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Register Account →</button>
+  </form>
+
+  <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+    Already have an account? <a href="/login">Sign In</a>
+  </p>
+</div>
+{% endblock %}

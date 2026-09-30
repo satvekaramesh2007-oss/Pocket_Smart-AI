@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+  <div class="form-header">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+      <span style="font-size: 2rem;">🏠</span>
+      <h2 class="form-title" style="margin-bottom: 0;">Home Interior Planner</h2>
+    </div>
+    <p style="color: var(--text-muted); font-size: 0.95rem;">Enter your total budget and room requirements to receive itemized furniture, lighting, and decor allocations.</p>
+  </div>
+
+  <form id="home-planner-form">
+    <!-- Budget & Currency Section -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="budget">Total Budget (INR ₹) *</label>
+        <input type="number" id="budget" required min="1000" step="500" value="50000" placeholder="e.g. 50000">
+      </div>
+
+      <div class="form-group">
+        <label for="currency">Currency</label>
+        <input type="text" id="currency" value="INR (₹)" disabled style="opacity: 0.7;">
+      </div>
+    </div>
+
+    <!-- Home & Room Specification -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="home_type">Home Type</label>
+        <select id="home_type">
+          <option value="Apartment" selected>Apartment</option>
+          <option value="Villa">Villa</option>
+          <option value="Independent House">Independent House</option>
+          <option value="Studio Flat">Studio Flat</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="room_type">Room Type *</label>
+        <select id="room_type" required>
+          <option value="Living Room" selected>Living Room</option>
+          <option value="Bedroom">Bedroom</option>
+          <option value="Kitchen">Kitchen</option>
+          <option value="Dining Room">Dining Room</option>
+          <option value="Study Room">Study Room</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Interior Design Style -->
+    <div class="form-group">
+      <label for="style">Design Style *</label>
+      <select id="style" required>
+        <option value="Modern" selected>Modern</option>
+        <option value="Minimalist">Minimalist</option>
+        <option value="Traditional">Traditional</option>
+        <option value="Luxury">Luxury</option>
+        <option value="Scandinavian">Scandinavian</option>
+        <option value="Industrial">Industrial</option>
+      </select>
+    </div>
+
+    <!-- Required Items Checklist -->
+    <div class="form-group">
+      <label>Items Required</label>
+      <div class="checkbox-grid">
+        <label class="checkbox-item"><input type="checkbox" name="items_required" value="Sofa" checked> Sofa / Seating</label>
+        <label class="checkbox-item"><input type="checkbox" name="items_required" value="Lights" checked> Lights & Lamps</label>
+        <label class="checkbox-item"><input type="checkbox" name="items_required" value="Ceiling fans" checked> Ceiling Fans</label>
+        <label class="checkbox-item"><input type="checkbox" name="items_required" value="Dining table"> Dining Table</label>
+        <label class="checkbox-item"><input type="checkbox" name="items_required" value="Curtains" checked> Curtains</label>
+        <label class="checkbox-item"><input type="checkbox" name="items_required" value="Wall art" checked> Wall Art / Decor</label>
+        <label class="checkbox-item"><input type="checkbox" name="items_required" value="Storage" checked> Storage Cabinet</label>
+        <label class="checkbox-item"><input type="checkbox" name="items_required" value="Rugs" checked> Area Rug</label>
+      </div>
+    </div>
+
+    <!-- Additional Custom Preferences -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="color_preference">Color Preference</label>
+        <input type="text" id="color_preference" placeholder="e.g. Beige, Warm White, Navy Blue">
+      </div>
+
+      <div class="form-group">
+        <label for="material_preference">Material Preference</label>
+        <input type="text" id="material_preference" placeholder="e.g. Teak Wood, Microfiber, Metal">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="brand_preference">Brand Preference (Optional)</label>
+        <input type="text" id="brand_preference" placeholder="e.g. IKEA, Pepperfry, Urban Ladder">
+      </div>
+
+      <div class="form-group">
+        <label for="must_have_items">Must-have Items</label>
+        <input type="text" id="must_have_items" placeholder="e.g. Recliner, Chandelier">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="avoid_items">Items to Avoid</label>
+      <input type="text" id="avoid_items" placeholder="e.g. Glass tables, Dark curtains">
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+      ✨ Generate Home Recommendations →
+    </button>
+  </form>
+</div>
+{% endblock %}

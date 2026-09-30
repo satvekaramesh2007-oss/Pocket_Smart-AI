@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+  <div class="form-header">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+      <span style="font-size: 2rem;">💎</span>
+      <h2 class="form-title" style="margin-bottom: 0;">Jewelry Recommendation Planner</h2>
+    </div>
+    <p style="color: var(--text-muted); font-size: 0.95rem;">Upload an outfit photo or enter styling requirements for AI color matching and jewelry recommendations.</p>
+  </div>
+
+  <form id="jewelry-planner-form" enctype="multipart/form-data">
+    <!-- Budget & Occasion -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="budget">Jewelry Budget (INR ₹) *</label>
+        <input type="number" id="budget" name="budget" required min="500" step="500" value="5000" placeholder="e.g. 5000">
+      </div>
+
+      <div class="form-group">
+        <label for="occasion">Occasion *</label>
+        <select id="occasion" name="occasion" required>
+          <option value="Wedding" selected>Wedding</option>
+          <option value="Party">Party</option>
+          <option value="College event">College Event</option>
+          <option value="Traditional event">Traditional Event</option>
+          <option value="Casual">Casual</option>
+          <option value="Engagement">Engagement</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Jewelry Type & Style -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="jewelry_type">Jewelry Type *</label>
+        <select id="jewelry_type" name="jewelry_type" required>
+          <option value="Necklace" selected>Necklace Set</option>
+          <option value="Earrings">Earrings</option>
+          <option value="Bracelet">Bracelet</option>
+          <option value="Ring">Ring</option>
+          <option value="Bangles">Bangles</option>
+          <option value="Full set">Full Bridal / Party Set</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="style">Style Preference *</label>
+        <select id="style" name="style" required>
+          <option value="Traditional" selected>Traditional / Kundan</option>
+          <option value="Modern">Modern / Chic</option>
+          <option value="Minimal">Minimalist</option>
+          <option value="Elegant">Elegant Pearl</option>
+          <option value="Statement">Statement Piece</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Metal & Color preferences -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="metal_preference">Metal Preference</label>
+        <select id="metal_preference" name="metal_preference">
+          <option value="Gold Plated" selected>Gold Plated</option>
+          <option value="Sterling Silver">Sterling Silver</option>
+          <option value="Rose Gold">Rose Gold</option>
+          <option value="Artificial / Oxidized">Artificial / Oxidized</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="outfit_color">Outfit Color</label>
+        <input type="text" id="outfit_color" name="outfit_color" placeholder="e.g. Royal Blue, Emerald Green, Crimson Red">
+      </div>
+    </div>
+
+    <!-- Multimodal Outfit Image Upload -->
+    <div class="form-group" style="background: rgba(15, 23, 42, 0.5); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px dashed var(--border-highlight);">
+      <label for="outfit_image">📸 Outfit Photo Upload (Optional)</label>
+      <p style="font-size: 0.825rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+        Supported formats: JPG, PNG, WEBP (Max 5MB). Gemini AI will analyze color harmony and neckline compatibility.
+      </p>
+      <input type="file" id="outfit_image" name="outfit_image" accept="image/jpeg,image/png,image/webp">
+
+      <!-- Live Image Preview Box -->
+      <div id="image-preview-container" style="display: none; margin-top: 1rem; text-align: center;">
+        <img id="image-preview" src="" alt="Outfit Preview" style="max-height: 180px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+        <p style="font-size: 0.75rem; color: var(--accent-blue); margin-top: 0.25rem;">Image attached for AI multimodal analysis</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="additional_requirements">Additional Styling Notes</label>
+      <textarea id="additional_requirements" name="additional_requirements" rows="2" placeholder="e.g. Prefer lightweight earrings, avoid heavy chokers..."></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+      💎 Generate Jewelry Styling Recommendations →
+    </button>
+  </form>
+</div>
+{% endblock %}

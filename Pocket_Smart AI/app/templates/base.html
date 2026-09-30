@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title if page_title else 'PocketSmart AI - Smart Budget & Recommendation Assistant' }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="navbar">
+    <a href="/" class="nav-brand">
+      <div class="brand-logo">⚡</div>
+      <span>PocketSmart AI</span>
+      {% if demo_mode %}
+        <span class="demo-badge" title="Running with local fallback catalog engine">⚡ DEMO MODE</span>
+      {% endif %}
+    </a>
+
+    <ul class="nav-links">
+      {% if user %}
+        <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+        <li><a href="/home-planner" class="nav-link">🏠 Home</a></li>
+        <li><a href="/party-planner" class="nav-link">🎉 Party</a></li>
+        <li><a href="/jewelry-planner" class="nav-link">💎 Jewelry</a></li>
+        <li><a href="/history" class="nav-link">📜 History</a></li>
+        <li>
+          <button onclick="logoutUser()" class="btn btn-secondary btn-sm">Logout ({{ user.name }})</button>
+        </li>
+      {% else %}
+        <li><a href="/#features" class="nav-link">Features</a></li>
+        <li><a href="/#how-it-works" class="nav-link">How It Works</a></li>
+        <li><a href="/login" class="nav-link">Login</a></li>
+        <li><a href="/register" class="btn btn-primary btn-sm">Register</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <!-- Global Loading Animation Overlay -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div id="loading-text" class="loading-text">PocketSmart AI is analyzing your budget and preferences...</div>
+  </div>
+
+  <!-- Main Body Content Block -->
+  <main class="main-container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Global Footer -->
+  <footer>
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center;">
+      <div>
+        <strong>PocketSmart AI</strong> — Plan Smarter. Spend Better.
+      </div>
+      <div>
+        © 2026 PocketSmart AI. Powered by Google Gemini.
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
